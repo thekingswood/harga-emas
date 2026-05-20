@@ -43,7 +43,7 @@ async function ambilHargaEmas() {
     let kurs = kursData.rates.IDR;
 
     // tambah premium fisik Asia +4%
-    hargaPerOzUSD = hargaPerOzUSD * 1.04;
+    hargaPerOzUSD = hargaPerOzUSD * 1.015;
 
     // oz ke gram
     let hargaPerGramIDR = (hargaPerOzUSD / 31.1035) * kurs;
