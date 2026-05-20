@@ -32,13 +32,18 @@
 <script>
 async function ambilHargaEmas() {
   try {
-    const response = await fetch("https://api.gold-api.com/price/XAU");
-    const data = await response.json();
+    // ambil harga emas dunia
+    const goldRes = await fetch("https://api.gold-api.com/price/XAU");
+    const goldData = await goldRes.json();
+    let hargaPerOzUSD = goldData.price;
 
-    let hargaPerOzUSD = data.price;
+    // ambil kurs USD ke IDR realtime
+    const kursRes = await fetch("https://open.er-api.com/v6/latest/USD");
+    const kursData = await kursRes.json();
+    let kurs = kursData.rates.IDR;
 
-    // kurs rupiah sementara
-    let kurs = 16000;
+    // tambah premium fisik Asia +4%
+    hargaPerOzUSD = hargaPerOzUSD * 1.04;
 
     // oz ke gram
     let hargaPerGramIDR = (hargaPerOzUSD / 31.1035) * kurs;
@@ -59,3 +64,4 @@ async function ambilHargaEmas() {
 
 ambilHargaEmas();
 </script>
+    
