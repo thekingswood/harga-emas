@@ -82,33 +82,53 @@ Memuat waktu...
   </div>
 
 <script>
+
+let hargaAsliFinal = 0;
+
 async function ambilHargaEmas() {
+
   try {
 
     // ambil harga emas dunia
-    const goldRes = await fetch("https://api.gold-api.com/price/XAU");
-    const goldData = await goldRes.json();
+    const goldRes =
+      await fetch("https://api.gold-api.com/price/XAU");
 
-    // ambil kurs realtime
-    const kursRes = await fetch("https://open.er-api.com/v6/latest/USD");
-    const kursData = await kursRes.json();
+    const goldData =
+      await goldRes.json();
+
+    // ambil kurs USD realtime
+    const kursRes =
+      await fetch("https://open.er-api.com/v6/latest/USD");
+
+    const kursData =
+      await kursRes.json();
 
     let hargaOzUSD = goldData.price;
+
     let kurs = kursData.rates.IDR;
 
-    // convert ke gram
-    let hargaGram = (hargaOzUSD * kurs) / 31.1035;
+    // convert oz ke gram
+    let hargaGram =
+      (hargaOzUSD * kurs) / 31.1035;
 
-    // kalibrasi supaya sama seperti goldprice.org
+    // kalibrasi mendekati goldprice.org
     hargaGram = hargaGram * 0.994;
 
     // potong 12%
-    let hargaToko = hargaGram * 0.88;
-    
-window.hargaAsliFinal = Math.round(hargaToko);
-    
+    let hargaToko =
+      hargaGram * 0.88;
+
+    hargaToko =
+      Math.round(hargaToko);
+
+    // simpan harga asli 24K
+    hargaAsliFinal = hargaToko;
+
+    // tampilkan harga
     document.getElementById("harga").innerHTML =
-      "Rp " + hargaToko.toLocaleString("id-ID") + " / gram";
+      "Rp " +
+      hargaToko.toLocaleString("id-ID") +
+      " / gram";
 
   } catch (error) {
 
@@ -116,65 +136,49 @@ window.hargaAsliFinal = Math.round(hargaToko);
       "Gagal mengambil harga emas";
 
   }
+
 }
 
-ambilHargaEmas();
-
-  function updateJam() {
-  const now = new Date();
-
-  const waktu = now.toLocaleTimeString("id-ID");
-
-  document.getElementById("jam").innerHTML =
-    "Update: " + waktu;
-}
-
-updateJam();
-
-setInterval(updateJam, 1000);
-  function hitungKadar() {
-    
-  // selalu ambil harga asli pertama
-  let hargaAsli = window.hargaAsliFinal;
+function hitungKadar() {
 
   // ambil kadar input
-  let kadar = parseFloat(
-    document.getElementById("kadar").value
-  );
+  let kadar =
+    parseFloat(
+      document.getElementById("kadar").value
+    );
 
   if (isNaN(kadar)) return;
 
   // hitung dari harga asli
-  let hasil = hargaAsli * (kadar / 99.99);
+  let hasil =
+    hargaAsliFinal * (kadar / 99.99);
 
-  hasil = Math.round(hasil);
-
-  document.getElementById("harga").innerHTML =
-    "Rp " +
-    hasil.toLocaleString("id-ID") +
-    " / gram";
-}
-
-  let teksHarga =
-    document.getElementById("harga").innerHTML;
-
-  // ambil angka dari tulisan harga
-  let hargaMurni = parseInt(
-    teksHarga.replace(/[^0-9]/g, "")
-  );
-
-  // ambil input kadar
-  let kadar =
-    parseFloat(document.getElementById("kadar").value);
-
-  // hitung harga sesuai kadar
-  let hasil = hargaMurni * (kadar / 99.99);
-
-  hasil = Math.round(hasil);
+  hasil =
+    Math.round(hasil);
 
   document.getElementById("harga").innerHTML =
     "Rp " +
     hasil.toLocaleString("id-ID") +
     " / gram";
+
 }
+
+function updateJam() {
+
+  const now = new Date();
+
+  const waktu =
+    now.toLocaleTimeString("id-ID");
+
+  document.getElementById("jam").innerHTML =
+    "Update: " + waktu;
+
+}
+
+ambilHargaEmas();
+
+updateJam();
+
+setInterval(updateJam, 1000);
+
 </script>
