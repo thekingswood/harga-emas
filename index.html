@@ -38,6 +38,10 @@ color: white;
 Update otomatis realtime
 </p>
     <div class="price" id="harga">Loading...</div>
+
+<p id="jam" style="margin-top:20px;color:#aaa;font-size:14px;">
+Memuat waktu...
+</p>
   </div>
 
 <script>
@@ -78,4 +82,17 @@ async function ambilHargaEmas() {
 }
 
 ambilHargaEmas();
+
+  function updateJam() {
+  const now = new Date();
+
+  const waktu = now.toLocaleTimeString("id-ID");
+
+  document.getElementById("jam").innerHTML =
+    "Update: " + waktu;
+}
+
+updateJam();
+
+setInterval(updateJam, 1000);
 </script>
