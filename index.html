@@ -30,8 +30,30 @@
   </div>
 
   <script>
-    document.getElementById("harga").innerHTML = 
-      "Website berhasil dibuat 🎉";
+async function ambilHargaEmas() {
+  const url = "https://api.metals.live/v1/spot/gold";
+
+  const response = await fetch(url);
+  const data = await response.json();
+
+  let hargaPerOzUSD = data[0].price;
+
+  // kurs rupiah sementara
+  let kurs = 16000;
+
+  // oz ke gram
+  let hargaPerGramIDR = (hargaPerOzUSD / 31.1035) * kurs;
+
+  // potong 12% harga beli toko
+  let hargaToko = hargaPerGramIDR * 0.88;
+
+  hargaToko = Math.round(hargaToko);
+
+  document.getElementById("harga").innerHTML =
+    "Rp " + hargaToko.toLocaleString("id-ID") + " / gram";
+}
+
+ambilHargaEmas();
   </script>
 </body>
 </html>
