@@ -132,4 +132,28 @@ ambilHargaEmas();
 updateJam();
 
 setInterval(updateJam, 1000);
+  function hitungKadar() {
+
+  let teksHarga =
+    document.getElementById("harga").innerHTML;
+
+  // ambil angka dari tulisan harga
+  let hargaMurni = parseInt(
+    teksHarga.replace(/[^0-9]/g, "")
+  );
+
+  // ambil input kadar
+  let kadar =
+    parseFloat(document.getElementById("kadar").value);
+
+  // hitung harga sesuai kadar
+  let hasil = hargaMurni * (kadar / 99.99);
+
+  hasil = Math.round(hasil);
+
+  document.getElementById("harga").innerHTML =
+    "Rp " +
+    hasil.toLocaleString("id-ID") +
+    " / gram";
+}
 </script>
