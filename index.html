@@ -48,7 +48,7 @@ async function ambilHargaEmas() {
     let hargaGram = (hargaOzUSD * kurs) / 31.1035;
 
     // kalibrasi supaya sama seperti goldprice.org
-    hargaGram = hargaGram * 1.001;
+    hargaGram = hargaGram * 0.994;
 
     // potong 12%
     let hargaToko = hargaGram * 0.88;
