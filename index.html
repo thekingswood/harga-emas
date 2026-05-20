@@ -29,31 +29,33 @@
     <div class="price" id="harga">Loading...</div>
   </div>
 
-  <script>
+<script>
 async function ambilHargaEmas() {
-  const url = "https://api.metals.live/v1/spot/gold";
+  try {
+    const response = await fetch("https://api.gold-api.com/price/XAU");
+    const data = await response.json();
 
-  const response = await fetch(url);
-  const data = await response.json();
+    let hargaPerOzUSD = data.price;
 
-  let hargaPerOzUSD = data[0].price;
+    // kurs rupiah sementara
+    let kurs = 16000;
 
-  // kurs rupiah sementara
-  let kurs = 16000;
+    // oz ke gram
+    let hargaPerGramIDR = (hargaPerOzUSD / 31.1035) * kurs;
 
-  // oz ke gram
-  let hargaPerGramIDR = (hargaPerOzUSD / 31.1035) * kurs;
+    // potong 12% harga beli toko
+    let hargaToko = hargaPerGramIDR * 0.88;
 
-  // potong 12% harga beli toko
-  let hargaToko = hargaPerGramIDR * 0.88;
+    hargaToko = Math.round(hargaToko);
 
-  hargaToko = Math.round(hargaToko);
+    document.getElementById("harga").innerHTML =
+      "Rp " + hargaToko.toLocaleString("id-ID") + " / gram";
 
-  document.getElementById("harga").innerHTML =
-    "Rp " + hargaToko.toLocaleString("id-ID") + " / gram";
+  } catch (error) {
+    document.getElementById("harga").innerHTML =
+      "Gagal ambil harga emas ❌";
+  }
 }
 
 ambilHargaEmas();
-  </script>
-</body>
-</html>
+</script>
