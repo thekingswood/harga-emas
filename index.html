@@ -32,24 +32,18 @@
 <script>
 async function ambilHargaEmas() {
   try {
-    // ambil harga emas dunia
-    const goldRes = await fetch("https://api.gold-api.com/price/XAU");
-    const goldData = await goldRes.json();
-    let hargaPerOzUSD = goldData.price;
+    // ambil harga emas IDR per troy ounce dari goldprice.live (goldprice.org)
+    const response = await fetch("https://api.goldprice.live/v1/spot/XAU/IDR");
+    const data = await response.json();
 
-    // ambil kurs USD ke IDR realtime
-    const kursRes = await fetch("https://open.er-api.com/v6/latest/USD");
-    const kursData = await kursRes.json();
-    let kurs = kursData.rates.IDR;
-
-    // tambah premium fisik Asia +4%
-    hargaPerOzUSD = hargaPerOzUSD * 1.015;
+    // harga emas IDR per oz
+    let hargaPerOzIDR = data.price;
 
     // oz ke gram
-    let hargaPerGramIDR = (hargaPerOzUSD / 31.1035) * kurs;
+    let hargaPerGram = hargaPerOzIDR / 31.1035;
 
     // potong 12% harga beli toko
-    let hargaToko = hargaPerGramIDR * 0.88;
+    let hargaToko = hargaPerGram * 0.88;
 
     hargaToko = Math.round(hargaToko);
 
@@ -64,4 +58,3 @@ async function ambilHargaEmas() {
 
 ambilHargaEmas();
 </script>
-    
