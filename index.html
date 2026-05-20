@@ -104,9 +104,9 @@ async function ambilHargaEmas() {
 
     // potong 12%
     let hargaToko = hargaGram * 0.88;
-    window.hargaAsli = hargaToko;
-    hargaToko = Math.round(hargaToko);
-
+    
+window.hargaAsliFinal = Math.round(hargaToko);
+    
     document.getElementById("harga").innerHTML =
       "Rp " + hargaToko.toLocaleString("id-ID") + " / gram";
 
@@ -133,14 +133,19 @@ updateJam();
 
 setInterval(updateJam, 1000);
   function hitungKadar() {
-function hitungKadar() {
+    
+  // selalu ambil harga asli pertama
+  let hargaAsli = window.hargaAsliFinal;
 
-  let hargaMurni = window.hargaAsli;
+  // ambil kadar input
+  let kadar = parseFloat(
+    document.getElementById("kadar").value
+  );
 
-  let kadar =
-    parseFloat(document.getElementById("kadar").value);
+  if (isNaN(kadar)) return;
 
-  let hasil = hargaMurni * (kadar / 99.99);
+  // hitung dari harga asli
+  let hasil = hargaAsli * (kadar / 99.99);
 
   hasil = Math.round(hasil);
 
